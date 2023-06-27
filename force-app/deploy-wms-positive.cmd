@@ -1,0 +1,2 @@
+sfdx force:source:deploy -p "./main/default/classes/WMS/Positive/" -l RunSpecifiedTests -r PositiveOrderExportJobTest,PositiveOrderStatusImportJobTest,PositiveServicesTest,PositiveOrderDetailsStatusImportJobTest
+pause

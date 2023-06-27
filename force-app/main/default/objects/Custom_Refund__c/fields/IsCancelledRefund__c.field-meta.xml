@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsCancelledRefund__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field returns boolean value, returns true if the order has give 100 percent discount before the fulfillment of the order</description>
+    <externalId>false</externalId>
+    <label>Is Cancelled Refund</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

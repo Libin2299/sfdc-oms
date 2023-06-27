@@ -1,0 +1,9 @@
+Named Credential - Amware (OAuth)
+
+AmwareJobSubmit [Submit to Amware] : Database.Batchable
+- Sends to Amware
+
+AmwareJobsPull [Pull Amware] : Scheduled 1hour
+- Query Amware (Status, Shipments, Returns)
+- Update Fulfillment Orders
+- ??Split Fulfillment??

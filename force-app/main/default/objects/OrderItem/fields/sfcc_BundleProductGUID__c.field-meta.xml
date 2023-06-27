@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>sfcc_BundleProductGUID__c</fullName>
+    <description>This field is used to store Bundled Product GUID from SFCC</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Bundle Product GUID from SFCC</inlineHelpText>
+    <label>SFCC Bundle Product GUId</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

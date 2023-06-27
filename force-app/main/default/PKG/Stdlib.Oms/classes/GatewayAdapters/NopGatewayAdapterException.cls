@@ -1,0 +1,1 @@
+global class NopGatewayAdapterException extends Exception {}

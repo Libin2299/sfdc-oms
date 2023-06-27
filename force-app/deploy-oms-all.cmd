@@ -1,0 +1,5 @@
+sfdx force:source:deploy -p "./main/default/classes/OMS/" -l RunSpecifiedTests -r OmsEmailTest,CustomCommonUtilTest,OmsBatchableApiOrderSummaryCreatorTest,ThreePayFulfilledJobTest
+sfdx force:source:deploy -p "./main/default/classes/LOY/,./main/default/triggers/LoyaltyTransactionTrigger.trigger" -l RunSpecifiedTests -r YotpoServiceTest
+sfdx force:source:deploy -p "./main/default/classes/WMS/Amware/" -l RunSpecifiedTests -r AmwareFulFillmentStatusImportJobTest,AmwareOrderExportJobTest,AmwareReturnsImportJobTest,AmwareServicesTest,WmsGatewayLogBuilderTest,AmwareFulFillmentStatusUpdateTest,AmwareOrderStatusByOrderNumberTest
+sfdx force:source:deploy -p "./main/default/classes/ERP/" -l RunSpecifiedTests -r SapFilesExportJobSchedulerTest,SapPaymentsExportJobTest,SapOrdersExportJobTest,SapRefundExportJobTest,CaptureAsynRefundsTest
+pause

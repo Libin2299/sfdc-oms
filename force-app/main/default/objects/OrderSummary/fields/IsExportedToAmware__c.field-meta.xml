@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsExportedToAmware__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Flag to mark if Order Summary is exported to Amware.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Exported to Amware</inlineHelpText>
+    <label>Is Exported To Amware</label>
+    <type>Checkbox</type>
+</CustomField>

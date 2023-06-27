@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Cancelled_Credit_Memo__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This flag is set to true in the &quot;Discount an Item&quot; flow if the credit memo is created for a 100% discount as a result of Amaware cancellation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This flag is set to true in the &quot;Discount an Item&quot; flow if the credit memo is created for a 100% discount as a result of Amaware cancellation.</inlineHelpText>
+    <label>Is Cancelled Credit Memo</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

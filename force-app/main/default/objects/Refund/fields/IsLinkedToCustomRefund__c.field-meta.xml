@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsLinkedToCustomRefund__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field returns boolean value, if it is linked to custom refund record it is true or else false</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Is Linked To Custom Refund record</inlineHelpText>
+    <label>Is Linked To Custom Refund</label>
+    <type>Checkbox</type>
+</CustomField>

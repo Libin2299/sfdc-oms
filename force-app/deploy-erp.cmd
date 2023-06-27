@@ -1,0 +1,2 @@
+sfdx force:source:deploy -p "./main/default/classes/ERP/" -l RunSpecifiedTests -r SapFilesExportJobSchedulerTest,SapPaymentsExportJobTest,SapOrdersExportJobTest,SapRefundExportJobTest,CaptureAsynRefundsTest
+pause

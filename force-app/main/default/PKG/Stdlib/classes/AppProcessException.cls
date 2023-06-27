@@ -1,0 +1,1 @@
+global with sharing class AppProcessException extends Exception {}

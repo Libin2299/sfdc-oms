@@ -1,0 +1,2 @@
+sfdx force:source:deploy -p "./main/default/PKG/Stdlib/,./main/default/classes/AppCloudOptions.cls,./main/default/classes/AppOmsOptions.cls,./main/default/classes/AppOptionsTest.cls" -l RunSpecifiedTests -r ServiceXTest,CloudXSfccTransferTest,CloudXSfmcTriggerTest,CloudXTest,DatabaseJobTest,AccountDataFactoryTest,UserDataFactoryTest,LogBuilderTest,NotificationServiceTest,QuickScheduleTest,TriggerHandlerXTest,TuplesTest,EventBusXTest,MapXTest,NumericXTest,ObjectXTest,StringXTest,SystemXTest,UserInfoXTest,AppOptionsTest
+pause

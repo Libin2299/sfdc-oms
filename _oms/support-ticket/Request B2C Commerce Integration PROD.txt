@@ -1,0 +1,33 @@
+Request B2C Commerce Integration PROD
+PRE-REQ: SFDC->Avatar->Settings->Grant Account Login Access->Salesforce.com Support - 1 Month
+
+TICKET
+Product: Commerce
+Topic: Order Management (Salesforce)
+Ord ID or MID: 00D460000015vhJ
+#Related Realms: 
+Instance Type: Production
+Subject: Request B2C Commerce Integration PROD
+Description@BEGIN
+*SFCC Production to SOM Production*
+Org ID: 00D460000015vhJ
+Org URL: churchdwight.lightning.force.com
+Enhanced Domain: No
+B2C URL: https://production-na01-churchdwight.demandware.net/on/demandware.store/Sites-Site/default
+API client ID: 4a8a4b2e-06cb-45c1-91cd-612f409b9959
+Salesforce admin: sky.morey@merklecxm.com.prod
+
+-Login for storefront-
+Username: storefront
+password: pass4church
+
+-Production Notes-
+Production in about 3 Month
+Order flow enabled
+Description@End
+In what timezone do you prefer to be contacted by Salesfroce Support?: [(GMT-05:00) Central Time (America/Chicago)]
+Severity: Severity 3 - Minor functionality impacted and time-sensive
+Collaborators: [Add]
+Files: None
+
+[CREATE CASE]

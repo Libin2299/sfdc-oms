@@ -1,0 +1,29 @@
+Request B2C Commerce Integration STG
+PRE-REQ: SFDC->Avatar->Settings->Grant Account Login Access->Salesforce.com Support - 1 Month
+
+TICKET
+Product: Commerce
+Topic: Order Management (Salesforce)
+Ord ID or MID: 00D6w0000004d7L
+#Related Realms: 
+Instance Type: Staging
+Subject: Request B2C Commerce Integration STG
+Description@Begin
+*SFCC Staging to SOM Staging*
+Org ID: 00D6w0000004d7L
+Org URL: churchdwight--full.sandbox.lightning.force.com
+Enhanced Domain: No
+B2C URL: https://staging-na01-churchdwight.demandware.net/on/demandware.store/Sites-Site/default
+API client ID: 4a8a4b2e-06cb-45c1-91cd-612f409b9959
+Salesforce admin: sky.morey@merklecxm.com.prod.full
+
+-Login for storefront-
+Username: storefront
+password: pass4church
+Description@End
+In what timezone do you prefer to be contacted by Salesfroce Support?: [(GMT-05:00) Central Time (America/Chicago)]
+Severity: Severity 3 - Minor functionality impacted and time-sensive
+Collaborators: [Add]
+Files: None
+
+[CREATE CASE]

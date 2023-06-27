@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsMarketingProduct__c</fullName>
+    <description>Filter to exclude Marketing SKUs from being exported to SAP</description>
+    <externalId>false</externalId>
+    <formula>CONTAINS(Name, &quot;FREE GIFT&quot;)</formula>
+    <inlineHelpText>Is Marketing Product</inlineHelpText>
+    <label>Is Marketing Product</label>
+    <type>Checkbox</type>
+</CustomField>

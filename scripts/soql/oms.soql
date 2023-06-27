@@ -1,0 +1,83 @@
+//Documents that are created today
+SELECT Id, CreatedDate, Title, ContentSize
+FROM ContentDocument 
+WHERE Createddate >= TODAY AND Title like '%_VIVISCAL%'
+ORDER BY CreatedDate DESC
+
+//Documents that are created after a date
+SELECT Id, CreatedDate, Title, ContentSize
+FROM ContentDocument 
+WHERE CreatedDate > 2022-10-11T23:59:59.000Z AND Title like '%_VIVISCAL%'
+ORDER BY CreatedDate DESC
+
+SELECT Id, OrderNumber, CurrencyIsoCode, GrandTotalAmount, TotalTaxAmount, TotalDeliveryAmount, TotalDeliveryTaxAmount, NumberOfPaymentTypes__c, sfcc_sourceChannel__c, SalesChannel.SalesChannelName, (SELECT Id, StockKeepingUnit, ProductCode, Quantity, UnitPrice, TotalAmtWithTax, TotalAdjustmentAmtWithTax, Status, sfcc_SAPMaterialCode__c, sfcc_BundleProductGUID__c, LotNumber__c FROM OrderItemSummaries WHERE IsMarketingProduct__c = false AND Type = 'Order Product' AND Status = 'Fulfilled'), (SELECT Id, AmwareShipDate__c FROM Shipments), IsExportedToSAP__c 
+FROM OrderSummary
+WHERE  CreatedDate >= 2022-10-10T00:00:01.000Z AND  CreatedDate <= 2022-11-18T23:59:59.000Z
+
+SELECT ContentDocumentId, ContentDocument.Title, ContentDocument.ContentModifiedDate, ContentDocument.ContentSize, LinkedEntityId, LinkedEntity.Type 
+FROM ContentDocumentLink 
+WHERE ID ='069750000015PLcAAM'
+
+SELECT Id, CreatedDate, Amount__c, Action__c, Transaction_ID__c, OrderSummary__c 
+FROM LoyaltyTransaction__c 
+ORDER BY createddate desc LIMIT 10
+
+SELECT createddate, ErrorMessage__c, GatewayMessage__c, InteractionType__c, OrderSummary__c, Request__c, ResultCode__c, Id 
+FROM LoyaltyGatewayLog__c 
+ORDER BY createddate desc LIMIT 10
+
+//Check original order details
+SELECT Id, TotalTaxAmount, TotalProductAdjDistTaxAmount, TotalProductAdjDistAmount, TotalDeliveryAdjDistTaxAmount, TotalDeliveryAdjDistAmount, TotalAmount, TotalAdjustedProductTaxAmount, TotalAdjustedProductAmount, TotalAdjustedDeliveryTaxAmount, TotalAdjustedDeliveryAmount FROM Order WHERE Id = ''
+
+//to check the SAP files
+SELECT Id, Title, CreatedDate FROM ContentDocument ORDER BY CreatedDate DESC
+
+//Get Custom_Refund__c records
+SELECT Id, CreatedDate, Reference_Refund__c, Reference_Refund__r.TotalApplied, Reference_ChangeOrder__c,Reference_ChangeOrder__r.GrandTotalAmount, Reference_Order_Payment_Summary__c, IsExportedToSAP__c, IsCancelledRefund__c FROM Custom_Refund__c
+ORDER BY CreatedDate DESC
+
+
+//check the refund total on change order:
+SELECT Id, Pricebook2Id, RelatedOrderId, TaxLocaleType, TotalAdjustedDeliveryAmount, TotalAdjustedDeliveryTaxAmount, TotalAdjustedProductAmount, TotalAdjustedProductTaxAmount, TotalAmount, TotalDeliveryAdjDistAmount, TotalDeliveryAdjDistTaxAmount, TotalProductAdjDistAmount, TotalProductAdjDistTaxAmount, TotalTaxAmount, Type 
+FROM Order
+WHERE OrderNumber ='00001045'
+
+SELECT Id FROM RecordType WHERE SObjectType = 'Account' AND DeveloperName = 'PersonAccount'
+
+//Get Generic Gateway log by Date (Shipping, Returns and CPI)
+SELECT Id, InteractionType__c, ErrorMessage__c, Request__c, Response__c, ResultCode__c, CreatedDate, Name 
+FROM GenericGatewayLog__c
+WHERE CreatedDate >= 2023-01-23T00:00:59.000Z
+ORDER BY CreatedDate DESC
+
+//get WMS logs (Order Export)
+SELECT Id, CreatedDate, InteractionType__c, ErrorMessage__c, Response__c, Request__c, ResultCode__c, OrderSummary__r.ordernumber 
+FROM WmsGatewayLog__c
+WHERE Ordersummary__c!=null 
+ORDER BY CreatedDate DESC
+
+SELECT  Request__c, Response__c, ResultCode__c, CreatedDate, Name FROM GenericGatewayLog__c WHERE CreatedDate >= 2023-01-23T00:00:59.000Z ORDER BY CreatedDate DESC
+
+//get latest Orders 
+SELECT Id, Orderreferencenumber, Status, OrderNumber, CreatedDate  FROM Order 
+WHERE  CreatedDate >= 2023-01-26T00:00:00.000z
+ORDER BY CreatedDate DESC
+
+//SAP Order Export
+SELECT Id, OrderNumber, CurrencyIsoCode, GrandTotalAmount, TotalTaxAmount, TotalDeliveryAmount, TotalDeliveryTaxAmount, TotalAdjustedDeliveryAmount ,TotalAdjustedDeliveryTaxAmount, NumberOfPaymentTypes__c, sfcc_sourceChannel__c, SalesChannel.SalesChannelName, OriginalOrder.TotalAmount, OriginalOrder.TotalTaxAmount, (SELECT Id, StockKeepingUnit, ProductCode, Quantity, UnitPrice, TotalPrice, TotalAmtWithTax, TotalLineTaxAmount, TotalAdjustmentAmtWithTax, Status, sfcc_SAPMaterialCode__c, sfcc_BundleProductGUID__c, LotNumber__c, IsMarketingProduct__c  FROM OrderItemSummaries WHERE IsMarketingProduct__c = false AND Type = 'Order Product' AND Status IN ('FULFILLED', 'RETURNINITIATED') ), (SELECT Id, AmwareShipDate__c, CreatedDate FROM Shipments WHERE CreatedDate >= 2023-01-26T08:00:00Z AND  CreatedDate <= 2023-01-27T07:59:59Z) 
+FROM OrderSummary 
+WHERE IsExportedToSAP__c = false AND OrderLifeCycleType = 'MANAGED'
+
+//SAP Payments
+SELECT Id, OrderSummary.OrderNumber, OrderSummary.CreatedDate,OrderSummary.SalesChannel.SalesChannelName, IsExportedToSAP__c,(SELECT Id, GatewayRefNumber, Amount FROM PaymentAuthorizations), (SELECT Id, PaymentNumber,CreatedDate, AccountId,CurrencyIsoCode,PaymentAuthorizationId, Amount from Payments WHERE CreatedDate >= 2023-01-26T00:00:00Z AND  CreatedDate <= 2023-01-26T23:59:59Z) FROM OrderPaymentSummary  WHERE OrderSummary.OrderLifeCycleType = 'MANAGED' AND IsExportedToSAP__c = false
+
+SELECT Id, Name, ReferenceNumber, ProductId, Product.Name, Product.ProductCode, Product.CurrencyIsocode FROM OrderDeliveryMethod 
+
+Select Id, name, ProductCode, ProductClass, CurrencyIsocode 
+FROM Product2 
+WHERE ProductCode like '%GR%'
+
+//SendShipmentEmailJob
+SELECT Id FROM Shipment WHERE OrderSummary.Status = 'FULFILLED'  AND FulfillmentOrder.Status =  'FULFILLED' 
+AND OrderSummary.SFMC_Shipment_Email_Sent__c = false AND OrderSummary.OrderLifeCycleType =  'MANAGED' AND CreatedDate >= 2023-04-18T07:00:00.000Z
+ORDER BY CreatedDate ASC

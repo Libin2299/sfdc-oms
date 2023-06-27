@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>sfcc_ThreePayDiscount__c</fullName>
+    <description>This is the total discount price of a 3-pay order line item that OMS will be receiving from SFCC</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the total discount price of a 3-pay order line item that OMS will be receiving from SFCC</inlineHelpText>
+    <label>sfcc_ThreePayDiscount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <type>Currency</type>
+</CustomField>
