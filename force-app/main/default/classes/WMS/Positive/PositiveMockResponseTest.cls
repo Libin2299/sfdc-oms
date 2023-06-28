@@ -54,4 +54,30 @@ public class PositiveMockResponseTest {
         }
         return orderStatusResponse;
     }
+    
+    public static String getOrderStatusResponseV2(String pfId) {
+        String orderStatusResponse;
+        PositiveOrderStatusResponse pos = new PositiveOrderStatusResponse();
+        PositiveOrderStatusResponse.Carrier carrier = new PositiveOrderStatusResponse.Carrier();
+        List<PositiveOrderStatusResponse.Products> itemList = new List<PositiveOrderStatusResponse.Products>();
+        FulfillmentOrder foList = [SELECT Id, OrderSummary.OrderNumber, Status, OrderSummary.PF_Order_ID__c, OrderSummary.Retry_Count__c, (SELECT Id, Quantity, OrderItemSummary.sfcc_SAPMaterialCode__c 
+                                   FROM FulfillmentOrderLineItems WHERE Type = 'Order Product' AND OrderItemSummary.sfcc_SAPMaterialCode__c != null) 
+                                   FROM FulfillmentOrder WHERE OrderSummary.PF_Order_ID__c = :pfId];
+        if (foList != null) {
+            pos.customersOrderNumber = foList.OrderSummary.OrderNumber;
+            pos.offDockedOn = String.valueOf(Datetime.now());
+            carrier.trackingUrl = 'https://PositiveTrack.com/'+foList.OrderSummary.OrderNumber;
+            pos.carrier = carrier;
+            for (Integer i = 0; i<foList.FulfillmentOrderLineItems.size(); i++) {
+                FulfillmentOrderLineItem foLine = foList.FulfillmentOrderLineItems[i];
+                PositiveOrderStatusResponse.Products item = new PositiveOrderStatusResponse.Products();
+                item.customerProductCode = foLine.OrderItemSummary.sfcc_SAPMaterialCode__c;
+                item.quantityShipped = Integer.valueOf(foLine.Quantity);
+                itemList.add(item);
+            }
+            pos.products = itemList;
+            orderStatusResponse = JSON.serialize(pos, true);
+        }
+        return orderStatusResponse;
+    }
 }

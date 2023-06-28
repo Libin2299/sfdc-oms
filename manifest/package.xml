@@ -114,6 +114,11 @@
         <members>PositiveOrderStatusImportJob</members>
         <members>PositiveOrderStatusImportJobTest</members>
         <members>PositiveOrderStatusResponse</members>
+        <members>PositiveOrderDetailsStatusImportJobV2</members>
+        <members>PositiveOrderDetailsStatusImportTestV2</members>
+        <members>PositiveOrderStatusImportJobV2</members>
+        <members>PositiveOrderStatusImportJobTestV2</members>
+        <members>PositiveMockResponseTestV2</members>
         <members>PositiveOrderWrapper</members>
         <members>PositiveServices</members>
         <members>PositiveServicesTest</members>
@@ -257,6 +262,8 @@
         <members>OrderSummary.PickedupByRemorse__c</members>
         <members>OrderSummary.sfcc_sourceChannel__c</members>
         <members>OrderSummary.SFMC_Shipment_Email_Sent__c</members>
+        <members>OrderSummary.PF_Order_ID__c</members>
+        <members>OrderSummary.Retry_Count__c</members>
         <members>OrderSummaryEvent__e.Action__c</members>
         <members>OrderSummaryEvent__e.OrderSummaryId__c</members>
         <members>PositiveOrderStatus__c.FulfillmentOrder__c</members>
