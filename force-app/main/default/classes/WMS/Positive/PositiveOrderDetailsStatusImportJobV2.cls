@@ -55,6 +55,11 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                 for (ProcessException pe : activePEs) {
                     peOsIds.add(pe.OrderSummaryId);
                 }
+                List<ProcessException> activePartialFullfilPe = [SELECT Id, OrderSummaryId FROM ProcessException WHERE Message = 'Partial Fulfillment' AND Status = 'New' AND OrderSummaryId IN :osIds];
+                Map<Id, Boolean> partialPeIds = new Map<Id, Boolean>();
+                for (ProcessException pe : activePartialFullfilPe) {
+                    partialPeIds.put(pe.OrderSummaryId, true);
+                }
                 foList = [SELECT Id, FulfilledToName, OrderSummaryId, OrderSummary.OrderNumber, Status, OrderSummary.PF_Order_ID__c, OrderSummary.Retry_Count__c,
                           (SELECT Id, Quantity, Type, OrderItemSummaryId, OrderItemSummary.sfcc_BundleProductGUID__c, OrderItemSummary.sfcc_SAPMaterialCode__c, OrderItemSummary.ProductCode  
                            FROM FulfillmentOrderLineItems WHERE Type = 'Order Product' ORDER BY  OrderItemSummary.sfcc_BundleProductGUID__c ASC NULLS FIRST)
@@ -96,7 +101,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                                                         shipItemList.add(new ShipmentItem(OrderItemSummaryId = foItem.OrderItemSummaryId, 
                                                                                             Quantity = foItem.Quantity));
                                                         break;
-                                                    } else if (positiveItem.quantityShipped != 0 && positiveItem.quantityShipped != foItemQuantity){
+                                                    } else if (positiveItem.quantityShipped != 0 && positiveItem.quantityShipped != foItemQuantity && !partialPeIds.containskey(fo.orderSummaryId)){
                                                         events.add(OmsSystemX.createProcessException('Partial Fulfillment', 'HIGH', fo.orderSummaryId , fo.Id, 'Partial Fulfillment'));
                                                     }
                                                 }
