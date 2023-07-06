@@ -18,7 +18,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
         try {
             String osIdWhereClause = orderSummaryIds != null && !orderSummaryIds.isEmpty() ? ' AND Id IN ' + orderSummaryIds : '';
             queryResult = Database.getQueryLocator('SELECT Id, PF_Order_ID__c, Status FROM OrderSummary WHERE PF_Order_ID__c != null AND Status = \'Waiting to Fulfill\'' +
-                                                   ' AND Retry_Count__c < 7 AND OrderLifeCycleType = \'MANAGED\' ' + osIdWhereClause + orderByAndLimitClause);
+                                                   ' AND (Retry_Count__c < 7 OR Retry_Count__c = NULL) AND OrderLifeCycleType = \'MANAGED\' ' + osIdWhereClause + orderByAndLimitClause);
         } catch (Exception ex) {
             CustomCommonUtil.logException(CLASS_NAME, ex);
         }
@@ -121,7 +121,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                                                                             TrackingNumber =  orderResObj.waybillNumber,
                                                                             TrackingUrl = orderResObj.carrier.trackingUrl));
                                         } else {
-                                            osListToUpdate.add(new OrderSummary(Id = fo.OrderSummaryId, Retry_Count__c = fo.ordersummary.Retry_Count__c + 1));
+                                            osListToUpdate.add(new OrderSummary(Id = fo.OrderSummaryId, Retry_Count__c = fo.ordersummary.Retry_Count__c == Null ? 1 : fo.ordersummary.Retry_Count__c + 1));
                                             if (fo.ordersummary.Retry_Count__c == 6){
                                                 events.add(OmsSystemX.createProcessException('Not Fulfilled', 'HIGH', fo.orderSummaryId , fo.Id, 'Not Fulfilled'));
                                             }
