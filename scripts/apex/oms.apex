@@ -49,6 +49,19 @@ Database.executeBatch(new AmwareFulFillmentStatusImportJob('2023-01-11 6:22'));
 AmwareReturnsImportJob arij = new AmwareReturnsImportJob();
 Database.executeBatch(arij);
 
+//positive status import
+Database.executeBatch(new PositiveOrderStatusImportJobV2());
+
+Database.executeBatch(new PositiveOrderDetailsStatusImportJobV2());
+
+//positive status import custom
+Database.executeBatch(new PositiveOrderStatusImportJobV2('2023-06-26', '2023-06-28', 200, 'Ascending'));
+
+List<String> orderSummaryIds = new List<String>();
+orderSummaryIds.add('1Os6w000000Ce4MCAS');
+orderSummaryIds.add('1Os6w000000Ce4RCAS');
+Database.executeBatch(new PositiveOrderDetailsStatusImportJobV2(orderSummaryIds));
+
 String cronExpression = '0 10 0 * * ? *';//12:10 am
 String scheduleName = 'SapOrdersExportJob';
 id jobID = System.schedule(scheduleName, cronExpression, new SapOrdersExportJobScheduler());
