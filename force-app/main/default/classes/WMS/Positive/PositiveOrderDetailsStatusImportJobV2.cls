@@ -18,7 +18,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
         try {
             String osIdWhereClause = orderSummaryIds != null && !orderSummaryIds.isEmpty() ? ' AND Id IN ' + orderSummaryIds : '';
             queryResult = Database.getQueryLocator('SELECT Id, PF_Order_ID__c, Status FROM OrderSummary WHERE PF_Order_ID__c != null AND Status = \'Waiting to Fulfill\'' +
-                                                   'AND Retry_Count__c < 7 AND OrderLifeCycleType = \'MANAGED\' ' + osIdWhereClause + orderByAndLimitClause);
+                                                   ' AND (Retry_Count__c < 7 OR Retry_Count__c = NULL) AND OrderLifeCycleType = \'MANAGED\' ' + osIdWhereClause + orderByAndLimitClause);
         } catch (Exception ex) {
             CustomCommonUtil.logException(CLASS_NAME, ex);
         }
@@ -54,6 +54,11 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                 List<Id> peOsIds = new List<Id>();
                 for (ProcessException pe : activePEs) {
                     peOsIds.add(pe.OrderSummaryId);
+                }
+                List<ProcessException> activePartialFullfilPe = [SELECT Id, OrderSummaryId FROM ProcessException WHERE Message = 'Partial Fulfillment' AND Status = 'New' AND OrderSummaryId IN :osIds];
+                Map<Id, Boolean> partialPeIds = new Map<Id, Boolean>();
+                for (ProcessException pe : activePartialFullfilPe) {
+                    partialPeIds.put(pe.OrderSummaryId, true);
                 }
                 foList = [SELECT Id, FulfilledToName, OrderSummaryId, OrderSummary.OrderNumber, Status, OrderSummary.PF_Order_ID__c, OrderSummary.Retry_Count__c,
                           (SELECT Id, Quantity, Type, OrderItemSummaryId, OrderItemSummary.sfcc_BundleProductGUID__c, OrderItemSummary.sfcc_SAPMaterialCode__c, OrderItemSummary.ProductCode  
@@ -96,6 +101,8 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                                                         shipItemList.add(new ShipmentItem(OrderItemSummaryId = foItem.OrderItemSummaryId, 
                                                                                             Quantity = foItem.Quantity));
                                                         break;
+                                                    } else if (positiveItem.quantityShipped != 0 && positiveItem.quantityShipped != foItemQuantity && !partialPeIds.containskey(fo.orderSummaryId)){
+                                                        events.add(OmsSystemX.createProcessException('Partial Fulfillment', 'HIGH', fo.orderSummaryId , fo.Id, 'Partial Fulfillment'));
                                                     }
                                                 }
                                             }
@@ -114,8 +121,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                                                                             TrackingNumber =  orderResObj.waybillNumber,
                                                                             TrackingUrl = orderResObj.carrier.trackingUrl));
                                         } else {
-                                            events.add(OmsSystemX.createProcessException('Partial Fulfillment', 'HIGH', fo.orderSummaryId , fo.Id, 'Partial Fulfillment'));
-                                            osListToUpdate.add(new OrderSummary(Id = fo.OrderSummaryId, Retry_Count__c = fo.ordersummary.Retry_Count__c + 1));
+                                            osListToUpdate.add(new OrderSummary(Id = fo.OrderSummaryId, Retry_Count__c = fo.ordersummary.Retry_Count__c == Null ? 1 : fo.ordersummary.Retry_Count__c + 1));
                                             if (fo.ordersummary.Retry_Count__c == 6){
                                                 events.add(OmsSystemX.createProcessException('Not Fulfilled', 'HIGH', fo.orderSummaryId , fo.Id, 'Not Fulfilled'));
                                             }
@@ -147,48 +153,48 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                             reqResMap = null;
                             shipItemList = null;
                         }
-                        //Inserting Shipment records
-                        if (!shipmentList.isEmpty()){
-                            insert shipmentList;
-                        }
-                        
-                        // For adding corresponding shipmentId reference in the ShipmentItem records
-                        List<ShipmentItem> shipItemToInsert = new List<ShipmentItem>();
-                        for (Shipment ship: shipmentList) {
-                            List<ShipmentItem> shipItems = shipmentItemMap.get(ship.FulfillmentOrderId);
-                            for (ShipmentItem shipItem : shipItems)  {
-                                shipItem.ShipmentId = ship.Id;
-                            }
-                            shipItemToInsert.addAll(shipItems);
-                        }
-                        
-                        //Inserting Shipment Items
-                        if (!shipItemToInsert.isEmpty()) {
-                            insert shipItemToInsert;
-                        }
-                        
-                        // Updating FulfillmentOrder records
-                        if (!foListToUpdate.isEmpty()){
-                            update foListToUpdate;
-                        }
-                        
-                        //Updating OrderSummary records
-                        if (!osListToUpdate.isEmpty()){
-                            update osListToUpdate;
-                        }
-            
-                        //Publishing 
-                        if (!events.isEmpty()) {
-                            EventBusX.publish(events);
-                        }
-            
-                        //Inserting WMS Gateways logs 
-                        if (!logs.isEmpty()) {
-                            insert logs;
-                        }
                     }
                 }
-        	}
+                //Inserting Shipment records
+                if (!shipmentList.isEmpty()){
+                    insert shipmentList;
+                }
+                
+                // For adding corresponding shipmentId reference in the ShipmentItem records
+                List<ShipmentItem> shipItemToInsert = new List<ShipmentItem>();
+                for (Shipment ship: shipmentList) {
+                    List<ShipmentItem> shipItems = shipmentItemMap.get(ship.FulfillmentOrderId);
+                    for (ShipmentItem shipItem : shipItems)  {
+                        shipItem.ShipmentId = ship.Id;
+                    }
+                    shipItemToInsert.addAll(shipItems);
+                }
+                
+                //Inserting Shipment Items
+                if (!shipItemToInsert.isEmpty()) {
+                    insert shipItemToInsert;
+                }
+                
+                // Updating FulfillmentOrder records
+                if (!foListToUpdate.isEmpty()){
+                    update foListToUpdate;
+                }
+                
+                //Updating OrderSummary records
+                if (!osListToUpdate.isEmpty()){
+                    update osListToUpdate;
+                }
+    
+                //Publishing 
+                if (!events.isEmpty()) {
+                    EventBusX.publish(events);
+                }
+    
+                //Inserting WMS Gateways logs 
+                if (!logs.isEmpty()) {
+                    insert logs;
+                }
+            }
         } catch (Exception ex) {
             CustomCommonUtil.logException(CLASS_NAME, ex);
         }
