@@ -31,4 +31,9 @@ public class PositiveOrderStatusImportJobTestV2 {
 		ois = [SELECT Id, PF_Order_ID__c, status FROM ordersummary WHERE Id = :osId];
         Assert.isNotNull(ois);
     }
+
+    @isTest(seeAllData=true)
+    static void testPositiveOrderStatusImportJobScheduler() {
+        new PositiveOrderStatusImportJobScheduler().execute(null);
+    }
 }
