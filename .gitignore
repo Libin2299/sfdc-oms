@@ -38,6 +38,3 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
-
-# temp deploy
-force-app/deploy-ondemand.cmd

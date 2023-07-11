@@ -1,0 +1,2 @@
+sfdx force:source:deploy -p "./main/default/classes/WMS/Positive/PositiveOrderStatusImpScheduler.cls,./main/default/classes/WMS/Positive/PositiveOrderDetailsImpScheduler.cls,./main/default/classes/WMS/Positive/PositiveOrderStatusImportJobTestV2.cls,./main/default/classes/WMS/Positive/PositiveOrderDetailsStatusImportTestV2.cls" -l RunSpecifiedTests -r PositiveOrderDetailsStatusImportTestV2,PositiveOrderStatusImportJobTestV2
+pause
