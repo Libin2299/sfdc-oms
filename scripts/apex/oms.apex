@@ -54,11 +54,11 @@ Database.executeBatch(new PositiveOrderStatusImportJobV2());
 
 Database.executeBatch(new PositiveOrderDetailsStatusImportJobV2());
 
-String cronExpression = '1 40 0 * * ? *';//01:40 am
+String cronExpression = '00 40 01 * * ? *';//01:40 am
 String scheduleName = 'PositiveOrderDetailsImportJob';
 id jobID = System.schedule(scheduleName, cronExpression, new PositiveOrderDetailsImpScheduler());
 
-String cronExpression = '1 10 0 * * ? *';//01:10 am
+String cronExpression = '00 10 01 * * ? *';//01:10 am
 String scheduleName = 'PositiveOrderStatusImportJob';
 id jobID = System.schedule(scheduleName, cronExpression, new PositiveOrderStatusImpScheduler());
 
