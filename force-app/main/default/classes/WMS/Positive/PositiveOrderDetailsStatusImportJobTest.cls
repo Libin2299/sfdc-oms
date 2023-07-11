@@ -23,9 +23,4 @@ public class PositiveOrderDetailsStatusImportJobTest {
         pos = [SELECT Id, IsImported__c FROM PositiveOrderStatus__c WHERE Id = :pos.Id];
         System.assertEquals(true, pos.IsImported__c);
     }
-
-    @isTest(seeAllData=true)
-    static void testPositiveOrderDetailsImportJobScheduler() {
-        new PositiveOrderDetailsStatusImportJobScheduler().execute(null);
-    }
 }

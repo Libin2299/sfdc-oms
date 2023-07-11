@@ -25,4 +25,9 @@ public class PositiveOrderDetailsStatusImportTestV2 {
         fo = [SELECT Id, Status FROM FulfillmentOrder WHERE Id = :foId];
         System.assertEquals(FULFILLED, fo.Status);
     }
+
+    @isTest(seeAllData=true)
+    static void testPositiveOrderDetailsImpScheduler() {
+        new PositiveOrderDetailsImpScheduler().execute(null);
+    }
 }

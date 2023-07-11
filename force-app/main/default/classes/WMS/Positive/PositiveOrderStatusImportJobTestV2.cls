@@ -33,7 +33,7 @@ public class PositiveOrderStatusImportJobTestV2 {
     }
 
     @isTest(seeAllData=true)
-    static void testPositiveOrderStatusImportJobScheduler() {
-        new PositiveOrderStatusImportJobScheduler().execute(null);
+    static void testPositiveOrderStatusImpScheduler() {
+        new PositiveOrderStatusImpScheduler().execute(null);
     }
 }
