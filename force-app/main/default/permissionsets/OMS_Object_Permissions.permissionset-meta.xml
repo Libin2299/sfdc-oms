@@ -4602,6 +4602,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderSummary.PF_Order_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>OrderSummary.PaymentAmount__c</field>
         <readable>true</readable>
@@ -4609,6 +4614,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>OrderSummary.PickedupByRemorse__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderSummary.Retry_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
