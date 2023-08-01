@@ -11,21 +11,21 @@
             <name>Yes</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Order_Summary_Records.Account.LastName</leftValueReference>
+                <leftValueReference>Get_Order_Summary_Record.Account.LastName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Unknown</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Get_Order_Summary_Records.Account.LastName</leftValueReference>
+                <leftValueReference>Get_Order_Summary_Record.Account.LastName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>[not provided]</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_O</targetReference>
+                <targetReference>Get_Order_Delivery_Group_Summary_Record</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -35,12 +35,12 @@
     <formulas>
         <name>FirstName</name>
         <dataType>String</dataType>
-        <expression>trim(LEFT({!Get_O.DeliverToName}, FIND(&apos; &apos;, {!Get_O.DeliverToName})-1))</expression>
+        <expression>trim(LEFT({!Get_Order_Delivery_Group_Summary_Record.DeliverToName}, FIND(&apos; &apos;, {!Get_Order_Delivery_Group_Summary_Record.DeliverToName})-1))</expression>
     </formulas>
     <formulas>
         <name>LastName</name>
         <dataType>String</dataType>
-        <expression>Trim(right({!Get_O.DeliverToName}, len({!Get_O.DeliverToName})-FIND(&apos; &apos;, {!Get_O.DeliverToName})))</expression>
+        <expression>Trim(right({!Get_Order_Delivery_Group_Summary_Record.DeliverToName}, len({!Get_Order_Delivery_Group_Summary_Record.DeliverToName})-FIND(&apos; &apos;, {!Get_Order_Delivery_Group_Summary_Record.DeliverToName})))</expression>
     </formulas>
     <interviewLabel>Update Account Name {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update Account Name</label>
@@ -65,8 +65,8 @@
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
         <description>To get DelivertoName from Order Delivery Group Summary</description>
-        <name>Get_O</name>
-        <label>Get Order Delivery Group Summary Records</label>
+        <name>Get_Order_Delivery_Group_Summary_Record</name>
+        <label>Get Order Delivery Group Summary Record</label>
         <locationX>50</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -78,7 +78,7 @@
             <field>OrderSummaryId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Order_Summary_Records.Id</elementReference>
+                <elementReference>Get_Order_Summary_Record.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -86,8 +86,8 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Order_Summary_Records</name>
-        <label>Get Order Summary Records</label>
+        <name>Get_Order_Summary_Record</name>
+        <label>Get Order Summary Record</label>
         <locationX>182</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -116,7 +116,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Order_Summary_Records.AccountId</elementReference>
+                <elementReference>Get_Order_Summary_Record.AccountId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -137,7 +137,7 @@
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Order_Summary_Records</targetReference>
+            <targetReference>Get_Order_Summary_Record</targetReference>
         </connector>
     </start>
     <status>Active</status>

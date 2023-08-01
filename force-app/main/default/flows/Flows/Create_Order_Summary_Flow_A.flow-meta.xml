@@ -86,16 +86,16 @@
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>Get_Created_Order_Summary.Account.LastName</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>Contains</operator>
                 <rightValue>
                     <stringValue>Unknown</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Get_Created_Order_Summary.Account.LastName</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>Contains</operator>
                 <rightValue>
-                    <stringValue>[Not Provided]</stringValue>
+                    <stringValue>Not Provided</stringValue>
                 </rightValue>
             </conditions>
             <connector>
