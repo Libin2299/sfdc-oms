@@ -71,8 +71,11 @@ public class PositiveMockResponseTest {
             for (Integer i = 0; i<foList.FulfillmentOrderLineItems.size(); i++) {
                 FulfillmentOrderLineItem foLine = foList.FulfillmentOrderLineItems[i];
                 PositiveOrderStatusResponse.Products item = new PositiveOrderStatusResponse.Products();
+                PositiveOrderStatusResponse.InventoryDetails inventory = new PositiveOrderStatusResponse.InventoryDetails();
+                inventory.lotNumber = 'LOTNUMBER' + i;
                 item.customerProductCode = foLine.OrderItemSummary.sfcc_SAPMaterialCode__c;
                 item.quantityShipped = Integer.valueOf(foLine.Quantity);
+                item.inventoryDetails = new List<PositiveOrderStatusResponse.InventoryDetails> { inventory };
                 itemList.add(item);
             }
             pos.products = itemList;

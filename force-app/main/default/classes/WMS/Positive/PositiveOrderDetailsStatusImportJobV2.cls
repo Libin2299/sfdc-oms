@@ -38,6 +38,7 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
         List<FulfillmentOrder> foListToUpdate = new List<FulfillmentOrder>();
         List<FulfillmentOrderLineItem> foItemListToUpdate = new List<FulfillmentOrderLineItem>();
         List<OrderSummary> osListToUpdate = new List<OrderSummary>();
+        List<OrderItemSummary> osItemListToUpdate = new List<OrderItemSummary>();
         List<Shipment> shipmentList = new List<Shipment>();
         List<ShipmentItem> shipItemList;
         Map<Id, List<ShipmentItem>> shipmentItemMap = new Map<Id, List<ShipmentItem>>();
@@ -100,6 +101,8 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                                                         }
                                                         shipItemList.add(new ShipmentItem(OrderItemSummaryId = foItem.OrderItemSummaryId, 
                                                                                             Quantity = foItem.Quantity));
+                                                        osItemListToUpdate.add(new OrderItemSummary(Id = foItem.OrderItemSummaryId, 
+                                                                                                    LotNumber__c = positiveItem.inventoryDetails[0].lotNumber));
                                                         break;
                                                     } else if (positiveItem.quantityShipped != 0 && positiveItem.quantityShipped != foItemQuantity && !partialPeIds.containskey(fo.orderSummaryId)){
                                                         events.add(OmsSystemX.createProcessException('Partial Fulfillment', 'HIGH', fo.orderSummaryId , fo.Id, 'Partial Fulfillment'));
@@ -180,6 +183,11 @@ public class PositiveOrderDetailsStatusImportJobV2 implements Database.Batchable
                     update foListToUpdate;
                 }
                 
+                //Updating OrderItemSummary records
+                if(!osItemListToUpdate.isEmpty()) {
+                    update osItemListToUpdate;
+                }
+
                 //Updating OrderSummary records
                 if (!osListToUpdate.isEmpty()){
                     update osListToUpdate;
