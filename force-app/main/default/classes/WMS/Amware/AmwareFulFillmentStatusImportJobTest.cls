@@ -21,7 +21,7 @@ public class AmwareFulFillmentStatusImportJobTest {
             amwareResponse = AmwareMockResponse.getfulfillmentResponse(fulfillmentIds);
             Test.setMock(HttpCalloutMock.class, new HttpCalloutServiceMultiMock(new Map<String, HttpCalloutServiceMock> {
                 'callout:Amware/api/authentication/authenticate' => new HttpCalloutServiceMock(200, authResponse),
-                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(sinceDateTime, 'UTF-8') => new HttpCalloutServiceMock(200, amwareResponse)
+                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&OrderType=VS&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(sinceDateTime, 'UTF-8') => new HttpCalloutServiceMock(200, amwareResponse)
             }));
             Test.startTest();
             Database.executeBatch(new AmwareFulFillmentStatusImportJob());
@@ -51,7 +51,7 @@ public class AmwareFulFillmentStatusImportJobTest {
             System.debug('AmwareResponse ' + amwareResponse);
             Test.setMock(HttpCalloutMock.class, new HttpCalloutServiceMultiMock(new Map<String, HttpCalloutServiceMock> {
                 'callout:Amware/api/authentication/authenticate' => new HttpCalloutServiceMock(200, authResponse),
-                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(sinceDateTime, 'UTF-8') => new HttpCalloutServiceMock(200, amwareResponse)
+                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&OrderType=VS&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(sinceDateTime, 'UTF-8') => new HttpCalloutServiceMock(200, amwareResponse)
             }));
             Test.startTest();
             Database.executeBatch(new AmwareFulFillmentStatusImportJob(sinceDateTime));
