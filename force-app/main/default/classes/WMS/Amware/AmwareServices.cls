@@ -37,7 +37,8 @@ public class AmwareServices {
         String authToken = getAmwareAuthToken();
         if(!String.isBlank(authToken)) {
             HttpRequest req = new HttpRequest();
-            req.setEndpoint('callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API'+ 
+            req.setEndpoint('callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API'+  
+                            '&OrderType=VS' +
                             '&rowsPerPage=' + rowsPerPage +
                             '&pageIndex=' + pageIndex +
                             '&sinceDateTime=' + EncodingUtil.urlEncode(sinceDateTime, 'UTF-8'));
