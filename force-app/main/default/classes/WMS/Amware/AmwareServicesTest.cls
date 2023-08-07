@@ -40,7 +40,7 @@ public class AmwareServicesTest {
         String currentDT = String.valueOf(System.now().format('yyyy-MM-dd h:mm'));
         Test.setMock(HttpCalloutMock.class, new HttpCalloutServiceMultiMock(new Map<String, HttpCalloutServiceMock> {
             'callout:Amware/api/authentication/authenticate' => new HttpCalloutServiceMock(200, authResponse),
-            'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(200, expected)
+            'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&OrderType=VS&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(200, expected)
         }));
           List<Object> amwareFulfillmentReqRes = AmwareServices.getFulfillmentByUTCDate(currentDT, 200, 0);
                     if(amwareFulfillmentReqRes != null) {
@@ -57,7 +57,7 @@ public class AmwareServicesTest {
         String currentDT = String.valueOf(System.now().format('yyyy-MM-dd h:mm'));
         Test.setMock(HttpCalloutMock.class, new HttpCalloutServiceMultiMock(new Map<String, HttpCalloutServiceMock> {
             'callout:Amware/api/authentication/authenticate' => new HttpCalloutServiceMock(200, authResponse),
-                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(500, '{}')
+                'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&OrderType=VS&rowsPerPage=200&pageIndex=0&sinceDateTime='+EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(500, '{}')
         }));
         //String actual = AmwareServices.getFulfillmentByUTCDate(currentDT, 200, 0);
         List<Object> amwareFulfillmentReqRes = AmwareServices.getFulfillmentByUTCDate(currentDT, 200, 0);
@@ -73,7 +73,7 @@ public class AmwareServicesTest {
         String currentDT = String.valueOf(System.now().format('yyyy-MM-dd h:mm'));
         Test.setMock(HttpCalloutMock.class, new HttpCalloutServiceMultiMock(new Map<String, HttpCalloutServiceMock> {
             'callout:Amware/api/authentication/authenticate' => new HttpCalloutServiceMock(200, '{}'),
-            'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&rowsPerPage=200&pageIndex=0&sinceDateTime=' + EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(500, 'Error Response')
+            'callout:Amware/api/fulfillment/fulfillmentbyUTCDate?orderSource=API&OrderType=VS&rowsPerPage=200&pageIndex=0&sinceDateTime=' + EncodingUtil.urlEncode(currentDT, 'UTF-8') => new HttpCalloutServiceMock(500, 'Error Response')
         }));
         List<Object> amwareFulfillmentReqRes = AmwareServices.getFulfillmentByUTCDate(currentDT, 200, 0);
                     if(amwareFulfillmentReqRes != null) {
