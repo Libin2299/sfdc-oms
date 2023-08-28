@@ -80,7 +80,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
                 FulfillmentOrder.OrderSummary.BillingCountry, FulfillmentOrder.OrderSummary.CurrencyIsoCode,
                 FulfillmentOrder.OrderSummary.Account.ContactID__pc, FulfillmentOrder.OrderSummary.Account.Name,
                 FulfillmentOrder.OrderSummary.TotalAmount, FulfillmentOrder.OrderSummary.TotalTaxAmount
-                FROM Shipment WHERE Id IN :shipmentList]) {
+                FROM Shipment WHERE TrackingUrl != Null AND Id IN :shipmentList]) {
                 ShipmentAndItems tuple = new ShipmentAndItems(s, new List<FulfillmentOrderLineItem>());
                 tupleByShipmentId.put(s.Id, tuple);
                 shipmentIdByfoId.put(s.FulfillmentOrderId, s.Id);
@@ -98,7 +98,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
             }
             
             //fetch the payment info by Order Summary ID
-            for(OrderPaymentSummary ops : [SELECT Id, Method, Type, OrderSummaryId FROM OrderPaymentSummary WHERE OrderSummaryId IN :paymentTypeMap.keySet()]) {
+            for(OrderPaymentSummary ops : [SELECT Id, Method, Type, OrderSummaryId FROM OrderPaymentSummary WHERE OrderSummaryId IN :osIds]) {
                 paymentTypeMap.put(ops.OrderSummaryId, ops.Type);
             }
             
@@ -160,7 +160,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
                             'EmailAddress' => s.BillingEmailAddress,
                             'OrderNumber' => s.OrderNumber,
                             'TrackingNumber' => shipment.TrackingNumber,
-                            'TrackingUrl' => shipment.TrackingUrl != null ? shipment.TrackingUrl  : '',
+                            'TrackingUrl' => shipment.TrackingUrl,
                             'SiteID' => s.SalesChannel.SalesChannelName,
                             'ShipmentID' => shipment.Id,
                             'AmountCurrencyCode' => s.CurrencyIsoCode,
