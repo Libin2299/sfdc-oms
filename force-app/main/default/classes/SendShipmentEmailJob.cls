@@ -29,7 +29,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
         
         try {
             queryResult = Database.getQueryLocator(
-                'SELECT Id FROM Shipment WHERE OrderSummary.Status = :FULFILLED  AND FulfillmentOrder.Status =  :FULFILLED  ' +
+                'SELECT Id FROM Shipment WHERE OrderSummary.Status = :FULFILLED  AND FulfillmentOrder.Status =  :FULFILLED AND TrackingUrl != NULL ' +
                 'AND OrderSummary.SFMC_Shipment_Email_Sent__c = false AND OrderSummary.OrderLifeCycleType =  :ORDER_LIFE_CYCLE_TYPE_MANAGED ' +
                 createdDateWhereClause + 
                 ' ORDER BY CreatedDate ASC LIMIT 50');
@@ -80,7 +80,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
                 FulfillmentOrder.OrderSummary.BillingCountry, FulfillmentOrder.OrderSummary.CurrencyIsoCode,
                 FulfillmentOrder.OrderSummary.Account.ContactID__pc, FulfillmentOrder.OrderSummary.Account.Name,
                 FulfillmentOrder.OrderSummary.TotalAmount, FulfillmentOrder.OrderSummary.TotalTaxAmount
-                FROM Shipment WHERE TrackingUrl != Null AND Id IN :shipmentList]) {
+                FROM Shipment WHERE TrackingUrl != NULL AND Id IN :shipmentList]) {
                 ShipmentAndItems tuple = new ShipmentAndItems(s, new List<FulfillmentOrderLineItem>());
                 tupleByShipmentId.put(s.Id, tuple);
                 shipmentIdByfoId.put(s.FulfillmentOrderId, s.Id);
@@ -160,7 +160,7 @@ public class SendShipmentEmailJob implements Database.Batchable<sObject>, Databa
                             'EmailAddress' => s.BillingEmailAddress,
                             'OrderNumber' => s.OrderNumber,
                             'TrackingNumber' => shipment.TrackingNumber,
-                            'TrackingUrl' => shipment.TrackingUrl,
+                            'TrackingUrl' => shipment.TrackingUrl != null ? shipment.TrackingUrl  : '',
                             'SiteID' => s.SalesChannel.SalesChannelName,
                             'ShipmentID' => shipment.Id,
                             'AmountCurrencyCode' => s.CurrencyIsoCode,
