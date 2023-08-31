@@ -82,10 +82,10 @@ public class PositiveOrderExportJob  implements Database.Batchable<sObject>, Dat
                     if(fo.FulfilledToPhone != null){
                         string fulfilledToPhone = fo.FulfilledToPhone.replaceAll('\\s+', '');
                         consignee.telephone = fulfilledToPhone.length() > 15 ? fulfilledToPhone.substring(0, 15) : fulfilledToPhone;
-                        }
-                        else{
-                            consignee.telephone = null;
-                        }
+                    }
+                    else{
+                        consignee.telephone = null;
+                    }
                     consignee.email = fo.FulfilledToEmailAddress;
                     consignee.languageCode = LANGUAGE_CODE;
                     poRequest.uniqueOrderReference = fo.OrderSummary.OrderNumber;
