@@ -27,7 +27,7 @@ public class OmsEmailShipped extends CloudXSfmcTrigger implements CloudX.HasArgs
         Map<Id, Id> shipmentIdByfoId = new Map<Id, Id>();
         Integer statusCode;
         try {
-            for (Shipment s : [SELECT Id, FulfillmentOrderId, TrackingNumber,
+            for (Shipment s : [SELECT Id, FulfillmentOrderId, TrackingNumber, TrackingUrl, 
                 FulfillmentOrder.OrderSummary.CreatedDate, FulfillmentOrder.OrderSummary.OrderNumber, FulfillmentOrder.FulfilledToAddress,
                 FulfillmentOrder.FulfilledToName, FulfillmentOrder.FulfilledToStreet, 
                 FulfillmentOrder.FulfilledToCity, FulfillmentOrder.OrderSummary.OriginalOrderId,
@@ -43,7 +43,7 @@ public class OmsEmailShipped extends CloudXSfmcTrigger implements CloudX.HasArgs
                 FulfillmentOrder.OrderSummary.BillingCountry, FulfillmentOrder.OrderSummary.CurrencyIsoCode,
                 FulfillmentOrder.OrderSummary.Account.ContactID__pc, FulfillmentOrder.OrderSummary.Account.Name,
                 FulfillmentOrder.OrderSummary.TotalAmount, FulfillmentOrder.OrderSummary.TotalTaxAmount
-                FROM Shipment Where Id In :shipmentIds]) {
+                FROM Shipment Where Id In :shipmentIds AND TrackingUrl != NULL]) {
                 ShipmentAndItems tuple = new ShipmentAndItems(s, new List<FulfillmentOrderLineItem>());
                 tupleByShipmentId.put(s.Id, tuple);
                 shipmentIdByfoId.put(s.FulfillmentOrderId, s.Id);
@@ -119,7 +119,8 @@ public class OmsEmailShipped extends CloudXSfmcTrigger implements CloudX.HasArgs
                     'SubscriberAttributes' => new Map<String, Object> {
                         'EmailAddress' => s.BillingEmailAddress,
                         'OrderNumber' => s.OrderNumber,
-                        'TrackingNumber' => shipment.TrackingNumber,  
+                        'TrackingNumber' => shipment.TrackingNumber,
+                        'TrackingUrl' => shipment.TrackingUrl != null ? shipment.TrackingUrl  : '',
                         'SiteID' => s.SalesChannel.SalesChannelName,
                         'ShipmentID' => shipment.Id,
                         'AmountCurrencyCode' => s.CurrencyIsoCode,
