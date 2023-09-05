@@ -79,7 +79,8 @@ public class PositiveOrderExportJob  implements Database.Batchable<sObject>, Dat
                     consignee.provinceCode = fo.FulfilledToStateCode;
                     consignee.postalCode = fo.FulfilledToPostalCode;
                     consignee.countryCode = fo.FulfilledToCountryCode;
-                    consignee.telephone = fo.FulfilledToPhone;
+                    String fulfilledToPhone = fo.FulfilledToPhone != null ? fo.FulfilledToPhone.replaceAll('\\s+', '') : fo.FulfilledToPhone;
+					consignee.telephone = (fulfilledToPhone != null && fulfilledToPhone.length() > 15) ? fulfilledToPhone.substring(0, 15) : fulfilledToPhone;
                     consignee.email = fo.FulfilledToEmailAddress;
                     consignee.languageCode = LANGUAGE_CODE;
                     poRequest.uniqueOrderReference = fo.OrderSummary.OrderNumber;
